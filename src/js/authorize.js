@@ -1,4 +1,4 @@
-import {auth} from "./firebase.js";
+import { auth } from "./firebase.js";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -8,30 +8,34 @@ import { updateProfile } from "firebase/auth";
 import { signOut } from "firebase/auth";
 
 
-export function Authorize(){
+export function Authorize() {
 
     // Signup 
-    const registerUser = async(fullname,email,password)=>{
+    const registerUser = async (fullname, email, password) => {
 
         const defaultprofileimg = "https://static.thenounproject.com/png/65476-200.png";
 
-        try{
+        try {
 
-            const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
             // console.log(user);
 
-            await updateProfile(user,{
-                displayName:fullname,
+            await updateProfile(user, {
+                displayName: fullname,
                 photoURL: defaultprofileimg
             }).then(() => {
+
+                // set name to localstorage 
+                setLocalName(fullname);
+
                 // Redirect to index.html
                 window.location.href = "../index.html";
             });
 
 
-        }catch(error){
+        } catch (error) {
             console.error("Error registering users : ", error);
         }
 
@@ -39,91 +43,91 @@ export function Authorize(){
     }
 
     // Signin 
-    const loginUser = (email,password)=>{
+    const loginUser = (email, password) => {
 
         signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+            .then((userCredential) => {
 
 
-            // console.log(userCredential.user);
+                // console.log(userCredential.user);
 
-            // set name to localstorage 
-            setLocalName(userCredential.user);
+                // set name to localstorage 
+                setLocalName(userCredential.user);
 
-            // Redirect to index.html
-            window.location.href = "../index.html";
+                // Redirect to index.html
+                window.location.href = "../index.html";
 
-        })
-        .catch((error) => {
-            console.error("Error logging in : ", error.message);
-        });
+            })
+            .catch((error) => {
+                console.error("Error logging in : ", error.message);
+            });
 
     }
 
     // Signout 
-    const logoutUser = ()=>{
+    const logoutUser = () => {
 
         signOut(auth)
-        .then(() => {
+            .then(() => {
 
-            // unset name from localstorage 
-            unsetLocalName();
+                // unset name from localstorage 
+                unsetLocalName();
 
-            window.location.href="../signin.html";
-        }).catch((error) => {
-            console.error("Error logging out = ",error.message);
-        });
+                window.location.href = "../signin.html";
+            }).catch((error) => {
+                console.error("Error logging out = ", error.message);
+            });
 
     }
 
     // Reset Passsword
-    const resetPassword = async(email,msg)=>{
+    const resetPassword = async (email, msg) => {
 
-        try{
+        try {
 
             await sendPasswordResetEmail(auth, email);
 
             msg.textContent = "Password reset email send. Please check your inbox.";
-            msg.style.color="green";
+            msg.style.color = "green";
             msg.style.fontSize = "11px";
 
-        }catch{
+        } catch {
 
-            console.error("Error sending password reset email = ",error.message);
+            console.error("Error sending password reset email = ", error.message);
 
             msg.textContent = `Error : ${error.message}`;
-            msg.style.color="red";
+            msg.style.color = "red";
             msg.style.fontSize = "11px";
 
         }
 
-    
+
     }
 
     // Google Signin
-    const googleLogin = ()=>{
+    const googleLogin = () => {
 
         const provider = new GoogleAuthProvider();
 
         signInWithPopup(auth, provider)
-        .then((result) => {
+            .then((result) => {
 
-            // console.log(result);
+                // console.log(result);
 
-            // set name to localstorage 
-            setLocalName(result.user.displayName);
+                // set name to localstorage 
+                setLocalName(result.user.displayName);
 
-            // Redirect to index.html
-            window.location.href = "../index.html";
-            
-        }).catch((error) => {
-            console.error("Error with Google sign-in = ",error.message);
-        });
+                // Redirect to index.html
+                window.location.href = "../index.html";
+
+            }).catch((error) => {
+                console.error("Error with Google sign-in = ", error.message);
+            });
 
     }
 
     // Auth Check
-    const isLooggedIn = ()=>{
+    const isLooggedIn = () => {
 
         onAuthStateChanged(auth, (userdata) => {
             if (userdata) {
@@ -137,7 +141,7 @@ export function Authorize(){
     }
 
     // Get User Info 
-    const getUser = (callback)=>{
+    const getUser = (callback) => {
 
         // callback("Hello sir");
 
@@ -149,16 +153,16 @@ export function Authorize(){
 
     }
 
-    const setLocalName = (userdata)=>{
-        localStorage.setItem('username',userdata.displayName);
+    const setLocalName = (userdata) => {
+        localStorage.setItem('username', userdata.displayName);
     }
 
-    const unsetLocalName = ()=>{
+    const unsetLocalName = () => {
         localStorage.removeItem('username');
     }
 
 
-    return {registerUser,loginUser,logoutUser,resetPassword,googleLogin,isLooggedIn,getUser}
+    return { registerUser, loginUser, logoutUser, resetPassword, googleLogin, isLooggedIn, getUser }
 }
 
 

@@ -1,9 +1,9 @@
-import {Chatroom} from "./chat.js";
-import {Lielements} from "./lielement.js";
+import { Chatroom } from "./chat.js";
+import { Lielements } from "./lielement.js";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // UI 
-const chatrooms = document.querySelector('.chatrooms'); 
+const chatrooms = document.querySelector('.chatrooms');
 const chatul = document.querySelector('.chat-ul');
 const chatform = document.querySelector(".chat-form");
 const userform = document.querySelector(".user-form");
@@ -15,23 +15,23 @@ userform.username.placeholder = `username is ${getlocalname}`;
 
 
 // Chatroom instance 
-const chatroom = Chatroom("general",getlocalname);
+const chatroom = Chatroom("general", getlocalname);
 roomtitle.textContent = "General";
 
 // Lielemnts instance
 const domli = Lielements(chatul);
 
 // Start chat
-chatform.addEventListener('submit',(e)=>{
+chatform.addEventListener('submit', (e) => {
     e.preventDefault();
     const message = chatform.message.value.trim();
     chatroom.addChat(message)
-        .then(()=>chatform.reset())
+        .then(() => chatform.reset())
         .catch(err => console.log(err));
 });
 
 // Update username 
-userform.addEventListener('submit',(e)=>{
+userform.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const newusername = userform.username.value.trim();
@@ -42,19 +42,19 @@ userform.addEventListener('submit',(e)=>{
     msg.innerText = `New name updated to ${newusername}`;
     userform.username.placeholder = `username is ${newusername}`;
 
-    setTimeout(()=>msg.innerText='',3000);
+    setTimeout(() => msg.innerText = '', 3000);
 
 });
 
 
 // Update chat room 
-chatrooms.addEventListener('click',(e)=>{
+chatrooms.addEventListener('click', (e) => {
     e.preventDefault();
 
     const getbtn = e.target.closest('button');
     // console.log(getbtn);
 
-    if(getbtn){
+    if (getbtn) {
 
         // reset li , clear all previous lis
         domli.resetli();
@@ -70,7 +70,7 @@ chatrooms.addEventListener('click',(e)=>{
 
 
         // fetch get chats 
-        chatroom.getChats((data)=>{
+        chatroom.getChats((data) => {
             domli.newli(data);
         });
 
@@ -83,7 +83,7 @@ chatrooms.addEventListener('click',(e)=>{
 
 
 // Get chats 
-chatroom.getChats((data)=>{
+chatroom.getChats((data) => {
     // return data;
     // console.log(data);
 
