@@ -1,25 +1,28 @@
-import { formatDistance, subDays } from "date-fns";
+import { format } from "date-fns";
 
-export function UiElement(divele) {
+export function UiElement(divele){
 
-    const userInfoEle = (data) => {
+
+    const userInfoEle = (data)=>{
 
         const uid = data.uid;
         const email = data.email;
         const fullname = data.displayName;
         const photourl = data.photoURL;
-        const createdtime = data.metadata.creationTime;
+        const createdtime = data.metadata.creationTime ; 
 
-
-        // const getdata = new Date(createdtime);
-        // const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        // const getdate = new Date(createdtime).getDate();
+        // const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         // const getmonth = new Date(createdtime).getMonth();
         // const getyear = new Date(createdtime).getFullYear();
-        // const formatteddate = `${getdata.getDate()} ${months[getmonth]} ${getyear}`;
+        // const formatteddate = `${getdate} ${months[getmonth]} ${getyear}`;
 
-        // Use dateFns.format provided by the CDN
-        const formatteddate = dateFns.format(new Date(createdtime), "dd MMM yyyy");
-        console.log(formatteddate);
+        // cdn
+        // const formatteddate = dateFns.format(new Date(createdtime),"do MMM yyyy");
+
+        // npm 
+        const formatteddate = format(new Date(createdtime),"do MMM yyyy");
+        // console.log(formatteddate);
 
         const html = `
             <img src="${photourl}" width="80" alt="profile icon" />
@@ -30,8 +33,9 @@ export function UiElement(divele) {
         `;
 
         divele.innerHTML = html;
-    };
-    return {
-        userInfoEle
-    };
+
+    }
+
+    return {userInfoEle}
+
 }

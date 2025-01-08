@@ -1,4 +1,4 @@
-import { Authorize } from "./authorize.js";
+import {Authorize} from "./authorize.js";
 
 const authorize = Authorize();
-authorize.isLoggedIn();
+authorize.isLooggedIn();

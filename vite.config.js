@@ -11,7 +11,7 @@ export default defineConfig({
                 profile: './src/profile.html',
                 reset: './src/reset.html',
                 signin: './src/signin.html',
-                signup: './src/sigup.html',
+                signup: './src/signup.html',
             }
         }
     },
@@ -21,3 +21,4 @@ export default defineConfig({
         }
     }
 });
+
